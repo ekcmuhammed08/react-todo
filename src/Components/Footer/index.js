@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import List from '../List'
 
-function Footer({tasks,filterValueSelected,clearCompleted}) {
+function Footer({tasks,filterValueSelected}) {
     const buttonList = [
         {name:"All",
         selected:false
@@ -35,7 +35,6 @@ function Footer({tasks,filterValueSelected,clearCompleted}) {
         })
         setBtnList(newTasks)
         filterValueSelected(clickedBtn.name)                //buton filtresi
-        console.log(clickedBtn.name)
     }    
 
   return (

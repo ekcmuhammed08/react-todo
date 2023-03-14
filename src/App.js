@@ -46,7 +46,7 @@ function Todo() {
     <div className="App">
       <section className='to-do'>
           <Header addTask={setTasks} tasks={tasks}/>
-          <List deleteValueSelected={onDeleteSelectedValues} clearCompleted={onDeleteCompletedValues} tasks={filteredTaskList}/>
+          <List filterValue={filterTextValue} deleteValueSelected={onDeleteSelectedValues} clearCompleted={onDeleteCompletedValues} tasks={filteredTaskList}/>
           <Footer filterValueSelected={onFilterBtnCliked} tasks={tasks}/>
       </section>     
     </div>

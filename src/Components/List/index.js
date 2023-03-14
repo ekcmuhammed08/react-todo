@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from 'react'
 
-function List({clearCompleted,tasks,deleteValueSelected}) {
+function List({filterValue,clearCompleted,tasks,deleteValueSelected}) {
 
     const [selectAll,setSelectAll] = useState(false)
     const [newTaskList,setNewTaskList] = useState(tasks)    //taskleri yeni bir listeye al
     const [changeStyle,setChangeStyle] = useState({})       //checked olunca style güncelle
 
-    useEffect(() => {                                       //tasks değişince newtasklisti değişince güncelle
+    useEffect(() => {                                      //tasks değişince newtasklisti değişince güncelle
       setNewTaskList(tasks)
     }, [tasks])
+
+    useEffect(() => {                                      //tüm tasklar checked olunca all checked butonunu güncelle
+        let count = 0;
+        tasks.forEach((task)=>{
+            if(task.isChecked===true){
+                count++;
+            }            
+        })
+        if(count===tasks.length){
+            setSelectAll(true)
+        }
+        else setSelectAll(false)
+    }, [newTaskList])
+    
+    
     
     useEffect(() => {                                       //newtasklist değişince:
       const newStyle = {}                                   
@@ -23,7 +38,6 @@ function List({clearCompleted,tasks,deleteValueSelected}) {
         const newTasks = [...newTaskList]
         newTasks[taskIndex].isChecked =  !newTasks[taskIndex].isChecked
         setNewTaskList(newTasks);
-        console.log(" newTaskList" + JSON.stringify(newTaskList,null," "))
     }
 
     const deleteTask = (i,name)=>{
@@ -41,6 +55,7 @@ function List({clearCompleted,tasks,deleteValueSelected}) {
         })
         setNewTaskList(newTasks);
     }
+    
   return (
     <div className='list'>
         <section>
@@ -49,14 +64,14 @@ function List({clearCompleted,tasks,deleteValueSelected}) {
                     <input className="toggle-all" type="checkbox" checked = {selectAll} onChange={setAllChecked}/>
                     <label htmlFor="toggle-all">
                         <div className="">
-                        <svg height="35px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polyline points="7.25 14.25,2.75 14.25,2.75 1.75,13.25 1.75,13.25 9.25"></polyline> <path d="m9.75 12.75 1.5 1.5 3-2.5m-8.5-4h4.5m-4.5 3h1.5m-1.5-6h4.5"></path> </g></svg>
+                        <svg height="35px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <polyline points="7.25 14.25,2.75 14.25,2.75 1.75,13.25 1.75,13.25 9.25"></polyline> <path d="m9.75 12.75 1.5 1.5 3-2.5m-8.5-4h4.5m-4.5 3h1.5m-1.5-6h4.5"></path> </g></svg>
                         </div>
                     </label>
-                    <text className='tasks-length'>({tasks.length})</text>
+                    <div className='tasks-length'>({tasks.length})</div>
                 </span>
                 <div className="tooltip">
                     <button className='tooltip' onClick={clearCompleted}>
-                        <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" width="32px" height="32px" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="11.264"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> </style> <g> <path class="st0" d="M168.256,86.263c23.815,0,43.128-19.304,43.128-43.128C211.384,19.312,192.071,0,168.256,0 c-23.832,0-43.143,19.312-43.143,43.135C125.112,66.959,144.424,86.263,168.256,86.263z"></path> <path class="st0" d="M389.288,132.104v-0.851c0-12.78-10.352-23.132-23.131-23.132H171.86c-46.82,0-88.396,15.612-98.772,67.517 L41.403,307.916c-2.228,9.962,4.042,19.829,14.005,22.058c9.946,2.219,19.813-4.05,22.034-14.005l33.332-88.133l8.626,262.282 c0,12.086,9.795,21.882,21.874,21.882c12.094,0,21.89-9.795,21.89-21.882l8.698-156.413l8.681,156.413 c0,12.086,9.802,21.882,21.882,21.882c12.087,0,21.89-9.795,21.89-21.882l12.31-316.75l132.709-18.357 C380.765,153.429,389.288,143.65,389.288,132.104z"></path> <rect x="336.497" y="225.645" transform="matrix(-0.7648 0.6443 -0.6443 -0.7648 820.1215 192.6837)" class="st0" width="76.784" height="40.794"></rect> <path class="st0" d="M273.918,320.807l13.097,167.059c1.201,13.662,12.643,24.134,26.37,24.134H431.58 c13.71,0,25.16-10.471,26.37-24.134l13.096-167.059H273.918z M328.671,488.28c-4.298,0.254-7.973-3.024-8.235-7.305l-7.417-122.269 c-0.255-4.289,3.016-7.973,7.305-8.244c4.289-0.254,7.973,3.016,8.243,7.305l7.401,122.27 C336.23,484.333,332.96,488.01,328.671,488.28z M380.264,480.498c0,4.313-3.485,7.798-7.782,7.798 c-4.297,0-7.782-3.486-7.782-7.798V358.237c0-4.297,3.485-7.782,7.782-7.782c4.298,0,7.782,3.486,7.782,7.782V480.498z M424.529,480.975c-0.254,4.281-3.938,7.559-8.226,7.305c-4.29-0.27-7.56-3.947-7.304-8.243l7.4-122.27 c0.262-4.289,3.946-7.558,8.243-7.305c4.289,0.271,7.559,3.955,7.289,8.244L424.529,480.975z"></path> </g> </g></svg>
+                        <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" width="32px" height="32px" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#CCCCCC" strokeWidth="11.264"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> </style> <g> <path class="st0" d="M168.256,86.263c23.815,0,43.128-19.304,43.128-43.128C211.384,19.312,192.071,0,168.256,0 c-23.832,0-43.143,19.312-43.143,43.135C125.112,66.959,144.424,86.263,168.256,86.263z"></path> <path class="st0" d="M389.288,132.104v-0.851c0-12.78-10.352-23.132-23.131-23.132H171.86c-46.82,0-88.396,15.612-98.772,67.517 L41.403,307.916c-2.228,9.962,4.042,19.829,14.005,22.058c9.946,2.219,19.813-4.05,22.034-14.005l33.332-88.133l8.626,262.282 c0,12.086,9.795,21.882,21.874,21.882c12.094,0,21.89-9.795,21.89-21.882l8.698-156.413l8.681,156.413 c0,12.086,9.802,21.882,21.882,21.882c12.087,0,21.89-9.795,21.89-21.882l12.31-316.75l132.709-18.357 C380.765,153.429,389.288,143.65,389.288,132.104z"></path> <rect x="336.497" y="225.645" transform="matrix(-0.7648 0.6443 -0.6443 -0.7648 820.1215 192.6837)" class="st0" width="76.784" height="40.794"></rect> <path class="st0" d="M273.918,320.807l13.097,167.059c1.201,13.662,12.643,24.134,26.37,24.134H431.58 c13.71,0,25.16-10.471,26.37-24.134l13.096-167.059H273.918z M328.671,488.28c-4.298,0.254-7.973-3.024-8.235-7.305l-7.417-122.269 c-0.255-4.289,3.016-7.973,7.305-8.244c4.289-0.254,7.973,3.016,8.243,7.305l7.401,122.27 C336.23,484.333,332.96,488.01,328.671,488.28z M380.264,480.498c0,4.313-3.485,7.798-7.782,7.798 c-4.297,0-7.782-3.486-7.782-7.798V358.237c0-4.297,3.485-7.782,7.782-7.782c4.298,0,7.782,3.486,7.782,7.782V480.498z M424.529,480.975c-0.254,4.281-3.938,7.559-8.226,7.305c-4.29-0.27-7.56-3.947-7.304-8.243l7.4-122.27 c0.262-4.289,3.946-7.558,8.243-7.305c4.289,0.271,7.559,3.955,7.289,8.244L424.529,480.975z"></path> </g> </g></svg>
                     </button>
                     <span className='tooltiptext'>Clear Completed Tasks</span>
                 </div>
