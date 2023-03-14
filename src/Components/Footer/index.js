@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import List from '../List'
 
-function Footer({tasks,filterValueSelected}) {
+function Footer({filterValueSelected}) {
     const buttonList = [
         {name:"All",
         selected:false
@@ -13,17 +13,8 @@ function Footer({tasks,filterValueSelected}) {
         selected:false
         }]
     const[btnList,setBtnList] = useState(buttonList)
-    const[changeStyle,setChangeStyle] = useState()
 
-    useEffect(() => {                                      //btnList değişince:
-        const newStyle = {}                                   
-        btnList.forEach((b,i) => {                        //selected ise styleı güncelle
-          newStyle[i] = b.selected ? "selected" : ""
-        });
-        setChangeStyle(newStyle)
-      }, [btnList])
-
-    const handleCheck = (clickedBtn,taskIndex)=>{          //check handler
+    const handleClick = (clickedBtn,taskIndex)=>{          //check handler
         const newTasks = [...btnList]                       
         newTasks.forEach((j,i)=>{                          //buttonlist. selected i güncelle
             if(i===taskIndex){
@@ -45,7 +36,7 @@ function Footer({tasks,filterValueSelected}) {
                     {
                         btnList.map((btn,i)=>
                         <li key={i}>
-                            <button className='filter-button' href="" onClick={()=>handleCheck(btn,i)}>{buttonList[i].name}</button>
+                            <button className='filter-button' href="" onClick={()=>handleClick(btn,i)}>{buttonList[i].name}</button>
                         </li>
                     )
                     }

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-function List({filterValue,clearCompleted,tasks,deleteValueSelected}) {
+function List({clearCompleted,tasks,deleteValueSelected}) {
 
     const [selectAll,setSelectAll] = useState(false)
     const [newTaskList,setNewTaskList] = useState(tasks)    //taskleri yeni bir listeye al
-    const [changeStyle,setChangeStyle] = useState({})       //checked olunca style güncelle
 
     useEffect(() => {                                      //tasks değişince newtasklisti değişince güncelle
       setNewTaskList(tasks)
@@ -21,16 +20,6 @@ function List({filterValue,clearCompleted,tasks,deleteValueSelected}) {
             setSelectAll(true)
         }
         else setSelectAll(false)
-    }, [newTaskList])
-    
-    
-    
-    useEffect(() => {                                       //newtasklist değişince:
-      const newStyle = {}                                   
-      newTaskList.forEach((t,i) => {                        //checked ise styleı güncelle
-        newStyle[i] = t.isChecked ? "completed" : ""
-      });
-      setChangeStyle(newStyle)
     }, [newTaskList])
     
 
@@ -78,7 +67,7 @@ function List({filterValue,clearCompleted,tasks,deleteValueSelected}) {
             </div>
             <ul className="todo-list">
 			{newTaskList && newTaskList.map((task,i)=>(
-                <li key={i} className={changeStyle[i]}>
+                <li key={i}>
                     <div className='view'>
                         <div className="">
                         <input id={`task-${i}`} className='toggle' type='checkbox' checked={task.isChecked} onChange={() => handleCheck(i)}/>
