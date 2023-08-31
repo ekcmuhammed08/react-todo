@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import List from '../List'
+import React, { useState } from 'react'
+
 
 function Footer({filterValueSelected}) {
     const buttonList = [
@@ -32,7 +32,7 @@ function Footer({filterValueSelected}) {
     <div>
         <footer className='footer'>
             <span className='menu'>
-                <ul>
+                <ul className='footer-buttons'>
                     {
                         btnList.map((btn,i)=>
                         <li key={i}>
